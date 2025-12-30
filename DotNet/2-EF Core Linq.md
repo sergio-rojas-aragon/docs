@@ -19,7 +19,7 @@ Apuntes que tomo cuando utilizo Entity Framework Core
 
 ## Instalacion
 
-```terminal
+```bash
 dotnet tool install --global dotnet-ef
 ```
 
@@ -31,18 +31,18 @@ Cuando se utilizan las migraciones, si existen datos y se modifica las tablas, s
 
 Donde dice Incial es el nombre de la migracion, por lo que puede ser el nombre que uno quiera:
 
-```terminal
+```bash
 dotnet ef migrations add Inicial
 ```
 
 * **actualizar migraciones**
-    ```terminal
+    ```bash
     dotnet ef database update
     ```
 
 ### listar migraciones
 
-```terminal
+```bash
 dotnet ef migrations list
 ```
 
@@ -51,14 +51,14 @@ dotnet ef migrations list
 el nombre de las migraciones tiene fecha, es parte del nombre asi que se tiene que incluir
 Esto puede fallar
 
-```terminal
+```bash
 dotnet ef database update nombreCompletoMigracion
 ```
 
 
 ### Eliminar migraciones
 
-```terminal
+```bash
 dotnet ef migrations remove
 ```
 
@@ -84,19 +84,19 @@ se tiene que especificar a que dbContext se quiere realizar la migracion
 
 ### List from AppDbContext and DDD architecture
 
-```terminal
+```bash
 dotnet ef migrations list --context AppDbContext --project ./src/TUM.Infrastructure --startup-project ./src/TUM.Api
 ```
 
 ### Create a migration from AppDbContext and DDD architecture
 
-```terminal
+```bash
 dotnet ef migrations add PedidoCreatedByFK --context AppDbContext --project src/TUM.Infrastructure --startup-project src/TUM.Api
 ```
 
 ### enviar cambios
 
-```terminal
+```bash
 dotnet ef database update --context AppDbContext --project src/TUM.Infrastructure --startup-project src/TUM.Api
 ```
 
@@ -159,11 +159,11 @@ public class Usuario
 
 * **hacer top 1**
 
-   ```csharp
-   var registro = context.Productos
-                        .OrderBy(p => p.Precio)
-                        .FirstOrDefault();
-   ```
+```csharp
+var registro = context.Productos
+                     .OrderBy(p => p.Precio)
+                     .FirstOrDefault();
+```
 * **hacer top 1 desc**
 
 ```csharp
@@ -180,6 +180,36 @@ var year = await _context.PeriodoContable
          .OrderByDescending(p => p.Anio)
          .Select(p => p.Anio)
          .FirstOrDefaultAsync();
+```
+
+* **Consulta con 2 where**
+
+**Opcion 1:**
+
+```csharp
+var resultados = context.Productos
+    .Where(p => p.Precio > 100 && p.Categoria == "Electronica")
+    .ToList();
+```
+
+**Opcion 2:**
+
+```csharp
+var query = context.Productos.AsQueryable();
+
+query = query.Where(p => p.Precio > 100);
+query = query.Where(p => p.Categoria == "Electronica");
+
+var resultados = query.ToList();
+```
+
+**Opcion 3** Query Syntax
+
+```csharp
+var resultados = from p in context.Productos
+                 where p.Precio > 100
+                 where p.Categoria == "Electronica"
+                 select p;
 ```
 
 ### Resumen De Metodos EF Core

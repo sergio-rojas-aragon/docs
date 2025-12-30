@@ -33,7 +33,11 @@ nav_order: 1
     ```bash
     docker ps
     ```
+* **Revissar configuracion del contenedor**, muestra un Json
 
+    ```bash
+    docker inspect postgrescontabilidad-db-1
+    ```
 
 
 ## Volumes

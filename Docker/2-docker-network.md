@@ -21,20 +21,22 @@ Si dos o más contenedores están en la misma red, podrán hablar entre sí. Si 
 https://docs.docker.com/engine/network/tutorials/standalone/
 
 * Listar redes: 
-    ```powershell
+
+    ```bash
     docker network ls
     ```
 * Crear red:
-    ```powershell
+
+    ```bash
     docker network create nombre-red
     ```
 
 * Eliminar redes:
-    ```powershell
+    ```bash
     docker network prune
     ```
 * Agregar un contenedor a una red:
-    ```powershell
+    ```bash
     docker network connect nombre-red nombre-contenedor
     ```
 
@@ -43,16 +45,26 @@ https://docs.docker.com/engine/network/tutorials/standalone/
     docker network inspect <NAME o ID>
     ```
 
+## cambiar configuracion
+
+Desde la carpeta del `docker-compose.yml`:
+
+```bash
+docker compose down
+docker compose up -d --build
+```
+
 ## Conectar dos contenedores
 
 first, create a new network and put the name.
 
 In te yml file write this:
 
+```yml
     networks:
       - net-postgres
 
 networks:
     net-postgres:
         external: true
-
+```
