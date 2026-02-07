@@ -212,6 +212,22 @@ var resultados = from p in context.Productos
                  select p;
 ```
 
+* **Consultar tabla padre y traer datos de tabla hijo**
+
+```csharp
+var pe = await _context.PeriodoContable
+    .Include(p => p.EstadoPeriodoContable)
+    .Where(p => p.Anio == periodoAnio && p.Mes == periodoMes)
+    .FirstOrDefaultAsync(cancellationToken);
+```
+
+* **buscar dentro de una lista y retornar el objeto encontrado**
+
+```csharp
+// Busca el primer objeto que coincida, o devuelve null si no lo encuentra
+CentroCosto encontrado = cc.FirstOrDefault(x => x.Nombre == centroCosto);
+```
+
 ### Resumen De Metodos EF Core
 
 ### Métodos de Ejecución y Recuperación en EF Core
